@@ -21,9 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/home',function (){
    echo 'Holle';
 });
-Route::get('/enroll',function ()
-{
-    return response()->json(['data'=>'1']);
-});
+Route::any('/enroll',[hsq\hsq_enroll::class,'add_user']);
 Route::any('/login',[hsq\hsq_login::class,'dd']);
+Route::any('/text',[hsq\hsq_enroll::class,'hsq_send_email']);
+
 
