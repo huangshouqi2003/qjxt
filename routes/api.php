@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,3 +16,15 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::post('/correcting','Lsf\AdminController@lsf_correct');
+
+Route::get('/test_vi','Lsf\TestController@vi');
+
+//Route::get('/test/code','Lsf\TestController@create_email');
+Route::get('/test_email','Lsf\TestController@sendEmail');
+
+Route::post('email','Lsf\AdminController@lsf_send_email');
+
+Route::post('/forgetpwd','Lsf\AdminController@lsf_up_paw');
