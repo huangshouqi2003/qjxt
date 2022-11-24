@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
-class text extends Controller
+class hsq_sendd_email extends Controller
 {
     public static function basic_email()
     {
@@ -14,10 +14,8 @@ class text extends Controller
         $data= array('name'=>$num);
         Mail::send('kf',$data, function($message) use($email)
         {
-            $message->to($email)->subject('验证码');
+            $message->to('3197088748@qq.com')->subject('验证码');
         });
         return $num;
     }
-
-
 }

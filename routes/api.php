@@ -23,6 +23,6 @@ Route::get('/home',function (){
 });
 Route::any('/enroll',[hsq\hsq_enroll::class,'add_user']);
 Route::any('/login',[hsq\hsq_login::class,'dd']);
-Route::any('/text',[hsq\hsq_enroll::class,'hsq_send_email']);
+Route::any('/hsqsenddemail',[hsq\hsq_enroll::class,'hsq_send_email']);
 
 
