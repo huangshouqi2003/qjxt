@@ -35,7 +35,6 @@ class hsq_enroll extends Controller
     {
         $flag=hsq_stu_info::hsq_insert_student($request);
         $flag1=hsq_zhucetwo::hsq_insert_password($request);
-
         if($flag!=1 and $flag1!=1)
         {
             return response()->json(['data'=>'注册失败']);

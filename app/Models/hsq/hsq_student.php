@@ -14,7 +14,6 @@ class hsq_student extends Model
     protected $fillable = ['stu_id','password'];
     public $timestamps = true;
 
-
     public static  function hsq_denglus($request)
     {
         try
@@ -25,14 +24,11 @@ class hsq_student extends Model
         {
             return 0;
         }
-        try {
-            $password=self::firstwhere('password',$request->input('password'));//查询密码
-        }
-        catch (\Exception $e)
+        if($stu_id['stu_id']==null)//都为空返回500
         {
             return 0;
         }
-        if($stu_id['id']==null||$password['password']==null)//都为空返回500
+        else if($stu_id['password']!=$request->input('password'))
         {
             return 0;
         }
