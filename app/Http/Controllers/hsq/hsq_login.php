@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\hsq;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\yanzhen;
+use App\Http\Requests\hsq_yanzhen_denlu;
 use App\Models\hsq\hsq_student;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class hsq_login extends Controller
 {
-    public static function creat_token(yanzhen $request)
+    public static function creat_token(hsq_yanzhen_denlu $request)
     {
         $key = 'hsq';
         $payload = [
@@ -34,7 +34,7 @@ class hsq_login extends Controller
         $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
         return $decoded;
     }
-    public static function dd(yanzhen $request)
+    public static function dd(hsq_yanzhen_denlu $request)
     {
         $gg = hsq_student::hsq_denglus($request);
         if($gg=='0')//账号密码输入有误

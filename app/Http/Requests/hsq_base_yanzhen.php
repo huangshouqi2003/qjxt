@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class yanzhen extends yanzhenzz
+class hsq_base_yanzhen extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,23 +17,16 @@ class yanzhen extends yanzhenzz
     {
         return true;
     }
+
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function failedValidation(Validator $validator)
     {
-        return [
-            'stu_id' => 'max:15',
-        ];
-    }
-    public function messages()
-    {
-        return [
-            'stu_id.max'=> 'A stu_id is max',
-        ];
 
+        $error= $validator->errors()->all();
+        throw  new HttpResponseException(response()->json(['code'=>400,'message'=>$error[0]]));
     }
-
 }
