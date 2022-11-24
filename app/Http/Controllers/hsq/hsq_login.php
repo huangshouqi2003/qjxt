@@ -19,7 +19,7 @@ class hsq_login extends Controller
             "typ" => "JWT",
             'iss' => 'http://example.org',
             'aud' => 'http://example.com',
-            'exp' => time() + 3600,
+            'exp' =>  time()+3600,
             'data' => [$request->input('stu_id'),
                 $request->input('password')
             ],
