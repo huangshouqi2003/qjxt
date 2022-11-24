@@ -24,6 +24,8 @@ class AdminController extends Controller
         $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
         return $decoded;
     }
+
+
     // 获取token并且验证token是否过期
     public static function lsf_get_token(Request $request)
     {
@@ -44,6 +46,11 @@ class AdminController extends Controller
             JWT::$leeway = 60;//当前时间减去60，把时间留点余地
             $decoded = JWT::decode($jwt, new Key('hsq', 'HS256'));//HS256方式，这里要和签发的时候对应
             $arr = $decoded;
+            $data=$arr->data;
+            $stu_id = $data[0];
+            $password = $data[1];
+
+
             //获取token创建时间
             $create_time= $arr->iat;
             //获取token结束时间
@@ -54,10 +61,18 @@ class AdminController extends Controller
             if (($end_time- $create_time)>($now_time-$create_time))
             {
                 //未过期
-                return true ;
+                $res=array('one'=>true,
+                    'two' => 'ok',
+                    'three'=> 1,
+                    'four'=>2) ;
+                return $res;
             }else {
-                //过期
-                return false;
+                //过期\
+                $res=array('one'=>false,
+                    'two'=>'out',
+                    'three'=>$stu_id,
+                    'four'=>$password);
+                return $res;
             }
 
         } catch (\Firebase\JWT\SignatureInvalidException $e) {  //签名不正确
@@ -89,7 +104,11 @@ class AdminController extends Controller
     public static function lsf_correct(NoteRequest $request)
     {
         $s=self::lsf_get_token($request);
-        if ($s)
+        $s1=$s['one'];
+        $s2=$s['two'];
+        $s3 = $s['three'];
+        $s4 = $s['four'];
+        if ($s1)
         {
             $id = $request['id'];
             $le_state = $request['le_state'];
@@ -98,13 +117,33 @@ class AdminController extends Controller
             return $res ?
                 json_success('操作成功!',$res,'200'):
                 json_fail('操作失败!',null,'100');
+        }else if ($s2=='out') {
+            $new_token = self::lsf_flush_token($s3,$s4);
+            return json_fail('token已过期',$new_token,100);
         }else{
-            return json_fail('操作失败,token不存在或已过期',null,100);
+            return json_fail('token不存在',null,100);
         }
-
-
     }
 
+    //刷新token
+    public static function lsf_flush_token($stu_id,$password)
+    {
+        $key = 'hsq';
+        $payload = [
+            "alg" => "HS256",
+            "typ" => "JWT",
+            'iss' => 'http://example.org',
+            'aud' => 'http://example.com',
+            'exp' => time() + 180,
+            'data' => [$stu_id,
+                $password
+            ],
+            'iat' => time(),
+            'nbf' => time()
+        ];
+        $token = JWT::encode($payload, $key, 'HS256');
+        return $token;
+    }
 
     //发送验证码
     public static function lsf_send_email(UserRequest $request)

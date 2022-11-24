@@ -41,7 +41,7 @@ class NoteRequest extends FormRequest
     public function messages(){
         return [
             'id.required' => 'id不能为空',
-            'id.regex' => 'id必须是整形',
+            'id.integer' => 'id必须是整形',
             'id.max' => 'id长度异常',
             'id.min' => 'id长度不能低于1',
 

@@ -9,10 +9,6 @@ use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
-    public static function vi()
-    {
-        return view('test1');
-    }
 
     public static function encode_token($jwt, $key)
     {
@@ -97,7 +93,7 @@ class TestController extends Controller
             "typ" => "JWT",
             'iss' => 'http://example.org',
             'aud' => 'http://example.com',
-            'exp' => time() + 100,
+            'exp' => time() + 10,
             'data' => [$request->input('stu_id'),
                 $request->input('password')
             ],
