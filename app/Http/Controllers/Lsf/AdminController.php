@@ -24,19 +24,63 @@ class AdminController extends Controller
         $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
         return $decoded;
     }
+    // 获取token并且验证token是否过期
+    public static function lsf_get_token(Request $request)
+    {
+        $token = $request->header('Authorization');
+
+        $request->headers->set('Authorization', $token);
+
+        $res= self::lsf_refresh_token($token);
+
+        return $res;
+
+    }
+
+    //token验证
+    public static function lsf_refresh_token($jwt)
+    {
+        try {
+            JWT::$leeway = 60;//当前时间减去60，把时间留点余地
+            $decoded = JWT::decode($jwt, new Key('hsq', 'HS256'));//HS256方式，这里要和签发的时候对应
+            $arr = $decoded;
+            //获取token创建时间
+            $create_time= $arr->iat;
+            //获取token结束时间
+            $end_time = $arr->exp;
+            //获取当前时间
+            $now_time=time();
+            //判断token是否过期
+            if (($end_time- $create_time)>($now_time-$create_time))
+            {
+                //未过期
+                return true ;
+            }else {
+                //过期
+                return false;
+            }
+
+        } catch (\Firebase\JWT\SignatureInvalidException $e) {  //签名不正确
+             logError($e->getMessage());
+             return false;
+        } catch (\Firebase\JWT\BeforeValidException $e) {  // 签名在某个时间点之后才能用
+            logError($e->getMessage());
+            return false;
+        } catch (\Firebase\JWT\ExpiredException $e) {  // token过期
+            logError($e->getMessage());
+            return false;
+        } catch (\Exception $e) {  //其他错误
+            logError($e->getMessage());
+            return false;
+        }
+        //Firebase定义了多个 throw new，我们可以捕获多个catch来定义问题，catch加入自己的业务，比如token过期可以用当前Token刷新一个新Token
+    }
 
 
     //创建随机验证码
     public static function lsf_create_email()
     {
-        $codes = (string)random_int(1000,9999);
-        return $codes;
-    }
-
-    //验证码暂存 codes
-    public static function codes()
-    {
-        $code = self::lsf_create_email();
+        $code = (string)random_int(1000,9999);
         return $code;
     }
 
@@ -44,13 +88,21 @@ class AdminController extends Controller
     //批改假条
     public static function lsf_correct(NoteRequest $request)
     {
-        $id = $request['id'];
-        $le_state = $request['le_state'];
-        $res = Admin::lsf_correct($id,$le_state);
+        $s=self::lsf_get_token($request);
+        if ($s)
+        {
+            $id = $request['id'];
+            $le_state = $request['le_state'];
+            $res = Admin::lsf_correct($id,$le_state);
 
-        return $res ?
-            json_success('操作成功!',$res,'200'):
-            json_fail('操作失败!',null,'100');
+            return $res ?
+                json_success('操作成功!',$res,'200'):
+                json_fail('操作失败!',null,'100');
+        }else{
+            return json_fail('操作失败,token不存在或已过期',null,100);
+        }
+
+
     }
 
 
@@ -58,17 +110,15 @@ class AdminController extends Controller
     public static function lsf_send_email(UserRequest $request)
     {
         //创建验证码
-
-        $co=self::codes();
+        $co=self::lsf_create_email();
 
         $email=$request['email'];
-        //发送验证码,在暂存数组codes中获取，每次都更新
+        //发送验证码,每次都更新
         $p = (new AdminController)->sendEmail($email,$co);
 
         return $p?
             json_success('发送成功',$co,'200'):
             json_fail('发送失败，邮箱有误或不存在',null,'100');
-
     }
 
     //发送邮件

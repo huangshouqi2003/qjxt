@@ -30,3 +30,5 @@ Route::post('email','Lsf\AdminController@lsf_send_email');
 Route::post('/forgetpwd','Lsf\AdminController@lsf_up_paw');
 
 Route::post('login','Lsf\TestController@creat_token');
+
+//Route::post('/correcting','Lsf\AdminController@lsf_get_token');

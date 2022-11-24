@@ -97,7 +97,7 @@ class TestController extends Controller
             "typ" => "JWT",
             'iss' => 'http://example.org',
             'aud' => 'http://example.com',
-            'exp' => time() + 86400,
+            'exp' => time() + 100,
             'data' => [$request->input('stu_id'),
                 $request->input('password')
             ],
