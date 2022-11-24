@@ -95,7 +95,7 @@ class TestController extends Controller
             'aud' => 'http://example.com',
             'exp' => time() + 10,
             'data' => [$request->input('stu_id'),
-                $request->input('password')
+                $request->input('stu_name')
             ],
             'iat' => time(),
             'nbf' => time()

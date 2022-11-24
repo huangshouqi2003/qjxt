@@ -19,11 +19,11 @@ use Illuminate\Support\Facades\Mail;
 class AdminController extends Controller
 {
     //解码token，获取信息
-    public static function encode_token($jwt, $key)
-    {
-        $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
-        return $decoded;
-    }
+//    public static function encode_token($jwt, $key)
+//    {
+//        $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
+//        return $decoded;
+//    }
 
 
     // 获取token并且验证token是否过期
@@ -48,7 +48,7 @@ class AdminController extends Controller
             $arr = $decoded;
             $data=$arr->data;
             $stu_id = $data[0];
-            $password = $data[1];
+            $stu_name = $data[1];
 
 
             //获取token创建时间
@@ -71,7 +71,7 @@ class AdminController extends Controller
                 $res=array('one'=>false,
                     'two'=>'out',
                     'three'=>$stu_id,
-                    'four'=>$password);
+                    'four'=>$stu_name);
                 return $res;
             }
 
@@ -104,8 +104,8 @@ class AdminController extends Controller
     public static function lsf_correct(NoteRequest $request)
     {
         $s=self::lsf_get_token($request);
-        $s1=$s['one'];
-        $s2=$s['two'];
+        $s1=$s['one'];//false
+        $s2=$s['two'];//out
         $s3 = $s['three'];
         $s4 = $s['four'];
         if ($s1)
@@ -126,7 +126,7 @@ class AdminController extends Controller
     }
 
     //刷新token
-    public static function lsf_flush_token($stu_id,$password)
+    public static function lsf_flush_token($stu_id,$stu_name)
     {
         $key = 'hsq';
         $payload = [
@@ -136,7 +136,7 @@ class AdminController extends Controller
             'aud' => 'http://example.com',
             'exp' => time() + 180,
             'data' => [$stu_id,
-                $password
+                $stu_name
             ],
             'iat' => time(),
             'nbf' => time()
