@@ -28,9 +28,8 @@ class NoteRequest extends FormRequest
         return [
             'id' => ['required',
                 'min:1',
-                'max:100000',
+                'max:10',
                 'regex:([1-9]\d*)',
-                'integer'
             ],
             'le_state' => [
                 'between:1,5',

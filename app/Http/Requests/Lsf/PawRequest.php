@@ -27,10 +27,9 @@ class PawRequest extends FormRequest
     {
         return [
             'stu_id' => ['required',
-                'min:10000000',
-                'max:100000000000',
+                'min:11',
+                'max:11',
                 'regex:([1-9]\d*)',
-                'integer'
             ],
             'stu_new_password' => [
                 'between:6,15',
