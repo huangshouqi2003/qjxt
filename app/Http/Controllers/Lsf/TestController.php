@@ -55,33 +55,6 @@ class TestController extends Controller
             logError('操作失败', [$e->getMessage()]);
             return null;
         }
-
-//        if (isset($email)) { // 如果接收到邮箱参数则发送邮件
-//            // 发送邮件
-//            $emails = $email ;
-//            $subject = '验证码' ;
-//            $message = '这是你的验证码'.$code ;
-//            mail("2657680282@qq.com", $subject,
-//                $message, "From:" . $email);
-//            echo "邮件发送成功";
-//        } else { // 如果没有邮箱参数则显示表单
-//            echo 'false';
-//        }
-
-
-//        }
-//        $now = date("Y-m-d h:i:s");
-//        $headers = 'From: name<2657680282@qq.com>';
-//        $body = "这是你的验证码：1234";
-//        $subject = "验证码";
-//        $to = "2657680282@qq.com";
-//        if (mail($to, $subject, $body, $headers))
-//        {
-//            echo true;//成功
-//        }
-//        else
-//        {
-//            echo false;//失败
     }
 
 
@@ -93,7 +66,7 @@ class TestController extends Controller
             "typ" => "JWT",
             'iss' => 'http://example.org',
             'aud' => 'http://example.com',
-            'exp' => time() + 10,
+            'exp' => time() + 180,
             'data' => [$request->input('stu_id'),
                 $request->input('stu_name')
             ],

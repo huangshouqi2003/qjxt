@@ -11,7 +11,7 @@ class Stu_info extends Model
     public $timestamps = true;
 
     //通过学号查找邮箱
-    public static function lsf_se_em($stu_id,$email)
+    public static function lsf_se_em($stu_id)
     {
 
         try {

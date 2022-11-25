@@ -28,7 +28,8 @@ class NoteRequest extends FormRequest
         return [
             'id' => ['required',
                 'min:1',
-                'max:5',
+                'max:100000',
+                'regex:([1-9]\d*)',
                 'integer'
             ],
             'le_state' => [
@@ -44,6 +45,7 @@ class NoteRequest extends FormRequest
             'id.integer' => 'id必须是整形',
             'id.max' => 'id长度异常',
             'id.min' => 'id长度不能低于1',
+            'id.regex' => 'id必须是整形',
 
             'le_state.required' => '批改状态不能为空',
             'le_state.between' => '假条状态必须介于 1 - 5 个字符之间',

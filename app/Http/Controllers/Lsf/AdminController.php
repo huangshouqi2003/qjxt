@@ -18,14 +18,6 @@ use Illuminate\Support\Facades\Mail;
 
 class AdminController extends Controller
 {
-    //解码token，获取信息
-//    public static function encode_token($jwt, $key)
-//    {
-//        $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
-//        return $decoded;
-//    }
-
-
     // 获取token并且验证token是否过期
     public static function lsf_get_token(Request $request)
     {
@@ -115,8 +107,8 @@ class AdminController extends Controller
             $res = Admin::lsf_correct($id,$le_state);
 
             return $res ?
-                json_success('操作成功!',$res,'200'):
-                json_fail('操作失败!',null,'100');
+                json_success('审核成功!',$res,'200'):
+                json_fail('审核失败!查无此假条！',null,'100');
         }else if ($s2=='out') {
             $new_token = self::lsf_flush_token($s3,$s4);
             return json_fail('token已过期',$new_token,100);
@@ -152,8 +144,12 @@ class AdminController extends Controller
         $co=self::lsf_create_email();
 
         $email=$request['email'];
+
+        $stu_id=$request['stu_id'];
         //发送验证码,每次都更新
-        $p = (new AdminController)->sendEmail($email,$co);
+        $res=Stu_info::lsf_se_em($stu_id);
+
+        $p = (new AdminController)->sendEmail($res,$co);
 
         return $p?
             json_success('发送成功',$co,'200'):
@@ -166,7 +162,7 @@ class AdminController extends Controller
 
             Mail::raw("这是你的验证码：".$code, function ($message) use($email){//文本
                 // * 如果已经设置过, mail.php中的from参数项,可以不用使用这个方法,直接发送
-//                $message->from("2657680282@qq.com", "Admin");//发送人
+//                $message->from("serein0311@qq.com", "Admin");//发送人
                 $message->subject("验证码");//主题
                 // 指定发送到哪个邮箱账号
                 $message->to($email);
@@ -181,31 +177,16 @@ class AdminController extends Controller
     //比对信息，修改密码（用户忘记密码）
     public static function lsf_up_paw(PawRequest $request)
     {
-        //获取数据
-//        $user_code = $request['code'];
-//        $email = $request['email'];
+
         $stu_id = $request['stu_id'];
         $stu_new_password = $request['stu_new_password'];
-        //通过学号获取学生邮箱，判断邮箱和学生是否匹配
-//        $s = Stu_info::lsf_se_em($stu_id,$email);
-        //如果学号和邮箱不匹配，就返回邮箱和学号不匹配
-//        if ($s==$email and $user_code=='1234'){
-            //修改密码
+
         $res = Stu_pwd::lsf_up_paw($stu_id,$stu_new_password);
 
         return $res?
             json_success('修改成功',$res,'200'):
             json_fail('修改失败，用户不存在',null,'100');
-//        }else{
-//            return json_fail('邮箱和学号不匹配',null,'100');
-//        }
-//        if ($user_code==$code){
-//            $res = Stu_pwd::lsf_up_paw($email,$stu_id,$stu_new_password);
 
-
-//        }else{
-//            return null;
-//        }
     }
 
 
