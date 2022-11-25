@@ -3,8 +3,9 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
-    ],
-    "content-hash": "979744bf17680ecfd69999611306ef80",
+   
+    "content-hash": "400ee6f5ade31c63d47c64b1d233c94f",
+
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
