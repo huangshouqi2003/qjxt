@@ -49,7 +49,6 @@ class NoteRequest extends FormRequest
 
             'le_state.required' => '批改状态不能为空',
             'le_state.between' => '假条状态必须介于 1 - 5 个字符之间',
-//            'name.unique' => '用户名已被占用，请重新填写',
 
         ];
     }

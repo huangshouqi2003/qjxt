@@ -43,10 +43,7 @@ class UserRequest extends FormRequest
             'stu_id.max' => '学号长度超出正常长度',
             'stu_id.min' => '学号长度低于正常长度',
             'stu_id.integer' => '学号应该是整形'
-//            'name.unique' => '用户名已被占用，请重新填写',
-//            'name.regex' => '用户名只支持英文、数字、横杠和下划线。',
-//            'name.between' => '用户名必须介于 3 - 25 个字符之间。',
-//            'name.required' => '用户名不能为空。',
+
         ];
     }
 
