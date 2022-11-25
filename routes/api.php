@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\hsq;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +19,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::get('all_stu','zm\AllinfoController@zmSelect');
 Route::get('lea_search','zm\SelectController@zmsearch');
 
 Route::any('change','zm\AllinfoController@zmchangetable');
+Route::get('/home',function (){
+   echo 'Holle';
+});
+Route::any('/enroll',[hsq\hsq_enroll::class,'add_user']);
+Route::any('/login',[hsq\hsq_login::class,'dd']);
+Route::any('/hsqsenddemail',[hsq\hsq_enroll::class,'hsq_send_email']);

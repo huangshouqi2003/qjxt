@@ -16,7 +16,7 @@ class EnableCrossRequestMiddleware
 
         public function handle($request, Closure $next)
     {
-        header('Content-Type: text/html;charset=utf-8');
+        header('Content-Type: hsqsenddemail/html;charset=utf-8');
         header('Access-Control-Allow-Origin:*');
         header('Access-Control-Allow-Methods:POST,GET,PUT,OPTIONS,DELETE'); // 允许请求的类型
         header('Access-Control-Allow-Credentials: true'); // 设置是否允许发送 cookies
